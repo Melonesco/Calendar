@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../new-event/NewEvent.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
@@ -17,45 +17,56 @@ const EventIconStyled = styled.div`
   cursor: pointer;
 `;
 
-const EditEvent = ({ cancelButtonHandler, eventItem, setEventItem }) => {
-  // const [editEvent, setEditEvent] = useState(...events);
+const CreateDateStyled = styled.div`
+  font-size: 12px;
+  color: #B3B3B3;
+  margin-top: -5px;
+  margin-bottom: 10px;
+`;
 
-  // console.log('EditEvent >>>', editEvent);
-  // console.log('EditEvent >>>', eventItem);
-
-  // const dispatch = useDispatch();
+const EditEvent = ({ cancelButtonHandler, eventItem, setEventItem, arrEvents, setArrEvents }) => {
   const {
-    register,
     formState: {
       isValid
     },
-    handleSubmit,
     reset
   } = useForm({
     mode: 'onBlur'
   });
 
-  const onSubmit2 = (data) => {
-    // dispatch(eventCreate(data, '1'));
-    reset();
-    cancelButtonHandler();
-  };
-
-  const handleDeleteEvent = (text, field) => {
+  const handleEditEvent = (data) => {
     // setEventItem(prevState => ({
     //   ...prevState,
-    //   [field]: text
+    //   data
+    // }));
+    // setArrEvents([...arrEvents, data]);
+    // setEventItem(arrEvents.filter(event => {
+    //   if (event.dateValue === data.dateValue) {
+    //     return {
+    //       ...event,
+    //       data
+    //     };
+    //   }
     // }));
   };
+
+  // console.log(arrEvents);
 
   const handleChangeEvent = (text, field) => {
     setEventItem(prevState => ({
       ...prevState,
       [field]: text
     }));
+    // console.log('Text>>', eventItem);
   };
 
-  console.log(eventItem);
+  // console.log('Text>>', eventItem);
+
+  const handleDeleteEvent = (data) => {
+    setArrEvents(prevState => prevState.filter(eventElement => eventElement.dateValue !== data.dateValue));
+    reset();
+    cancelButtonHandler();
+  };
 
   return (
     <div className="event">
@@ -69,7 +80,8 @@ const EditEvent = ({ cancelButtonHandler, eventItem, setEventItem }) => {
             fontSize="20px"
             icon={faClose}/>
         </div>
-        <form onSubmit={handleSubmit(onSubmit2)}>
+        <form onSubmit={() => handleEditEvent(eventItem)}>
+          <CreateDateStyled>Created at: {eventItem.createDataValue}</CreateDateStyled>
           <div className="event-title">
             <label htmlFor="title">Title*</label>
             <input
@@ -78,7 +90,6 @@ const EditEvent = ({ cancelButtonHandler, eventItem, setEventItem }) => {
               value={eventItem.titleValue}
               onChange={e => handleChangeEvent(e.target.value, 'titleValue')}
               maxLength={60}
-              {...register('titleValue', { required: true })}
             />
           </div>
           <div className="event-description">
@@ -89,7 +100,7 @@ const EditEvent = ({ cancelButtonHandler, eventItem, setEventItem }) => {
               maxLength={200}
               value={eventItem.descriptionValue}
               onChange={e => handleChangeEvent(e.target.value, 'descriptionValue')}
-              {...register('descriptionValue', { required: true })}/>
+            />
           </div>
           <div className="event-container">
             <div className="event-date">
@@ -102,7 +113,6 @@ const EditEvent = ({ cancelButtonHandler, eventItem, setEventItem }) => {
                 maxLength={10}
                 value={eventItem.dateValue}
                 onChange={e => handleChangeEvent(e.target.value, 'dateValue')}
-                {...register('dateValue', { required: true })}
               />
             </div>
             <div className="event-time">
@@ -113,14 +123,12 @@ const EditEvent = ({ cancelButtonHandler, eventItem, setEventItem }) => {
                 maxLength={200}
                 value={eventItem.timeValue}
                 onChange={e => handleChangeEvent(e.target.value, 'timeValue')}
-                {...register('timeValue', { required: true })}
               />
             </div>
           </div>
           <div className="event-submit">
-            <EventIconStyled>
+            <EventIconStyled onClick={() => handleDeleteEvent(eventItem)}>
               <FontAwesomeIcon
-                onClick={e => handleDeleteEvent('', 'titleValue')}
                 cursor="pointer"
                 fontSize="14px"
                 color="white"

@@ -1,5 +1,5 @@
-import './App.css';
 import Calendar from './components/calendar/Calendar';
+import './App.css';
 
 function App () {
   return <Calendar/>;

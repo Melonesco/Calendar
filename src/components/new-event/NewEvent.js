@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import './NewEvent.css';
+import moment from 'moment';
 
 const NewEvent = ({ handleClickClose, setArrEvents, arrEvents }) => {
   const {
@@ -16,11 +17,11 @@ const NewEvent = ({ handleClickClose, setArrEvents, arrEvents }) => {
     mode: 'onBlur'
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = useCallback((data) => {
     setArrEvents([...arrEvents, data]);
     reset();
     handleClickClose();
-  };
+  }, [arrEvents, handleClickClose, reset, setArrEvents]);
 
   return (
     <div className="event">
@@ -72,8 +73,16 @@ const NewEvent = ({ handleClickClose, setArrEvents, arrEvents }) => {
                 {...register('timeValue', { required: true })}
               />
             </div>
-            <input type="text"/>
           </div>
+          <label htmlFor="datepicker">
+            <input
+              style={{ display: 'none' }}
+              id="datepicker"
+              type="text"
+              defaultValue={moment().format('DD MM YYYY hh:mm')}
+              {...register('createDataValue', { required: null })}
+            />
+          </label>
           <div className="event-submit">
             <input
               type="submit"
