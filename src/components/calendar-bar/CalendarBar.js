@@ -7,10 +7,6 @@ const CalendarBar = ({ currentDate, setCurrentDate, handleClickLeft, handleClick
   const handleClickOpen = useCallback(() => setElementBoolean(false), []);
   const handleClickClose = useCallback(() => setElementBoolean(true), []);
 
-  const handleGetDate = (e) => {
-    setCurrentDate(e.target.value);
-  };
-
   return (
     <div className="calendar-bar">
       <div className="calendar-button" onClick={handleClickOpen}>+</div>
@@ -22,7 +18,7 @@ const CalendarBar = ({ currentDate, setCurrentDate, handleClickLeft, handleClick
           <p onClick={handleClickRight}>&#62;</p>
         </div>
         <div className="calendar-datepicker">
-          <input onChange={handleGetDate} value={currentDate} type="date"/>
+          <input value={currentDate} type="date"/>
         </div>
       </div>
     </div>

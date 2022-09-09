@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
+import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import './NewEvent.css';
-import moment from 'moment';
 
 const NewEvent = ({ handleClickClose, setArrEvents, arrEvents }) => {
   const {

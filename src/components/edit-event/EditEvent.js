@@ -1,10 +1,10 @@
-import React from 'react';
-import '../new-event/NewEvent.css';
+import React, { useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
+import '../new-event/NewEvent.css';
 
 const EventIconStyled = styled.div`
   background-color: #E13333;
@@ -34,39 +34,25 @@ const EditEvent = ({ cancelButtonHandler, eventItem, setEventItem, arrEvents, se
     mode: 'onBlur'
   });
 
-  const handleEditEvent = (data) => {
-    // setEventItem(prevState => ({
-    //   ...prevState,
-    //   data
-    // }));
-    // setArrEvents([...arrEvents, data]);
-    // setEventItem(arrEvents.filter(event => {
-    //   if (event.dateValue === data.dateValue) {
-    //     return {
-    //       ...event,
-    //       data
-    //     };
-    //   }
-    // }));
-  };
+  const handleEditEvent = useCallback((data) => {
+    setArrEvents(prevState => prevState.filter(eventElement => eventElement.dateValue !== data.dateValue));
+    setArrEvents([...arrEvents, data]);
+    reset();
+    cancelButtonHandler();
+  }, [arrEvents, cancelButtonHandler, reset, setArrEvents]);
 
-  // console.log(arrEvents);
-
-  const handleChangeEvent = (text, field) => {
+  const handleChangeEvent = useCallback((text, field) => {
     setEventItem(prevState => ({
       ...prevState,
       [field]: text
     }));
-    // console.log('Text>>', eventItem);
-  };
+  }, [setEventItem]);
 
-  // console.log('Text>>', eventItem);
-
-  const handleDeleteEvent = (data) => {
+  const handleDeleteEvent = useCallback((data) => {
     setArrEvents(prevState => prevState.filter(eventElement => eventElement.dateValue !== data.dateValue));
     reset();
     cancelButtonHandler();
-  };
+  }, [cancelButtonHandler, reset, setArrEvents]);
 
   return (
     <div className="event">
