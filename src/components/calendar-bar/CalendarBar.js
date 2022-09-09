@@ -28,7 +28,7 @@ import React, { useState } from 'react';
 import NewEvent from '../new-event/NewEvent';
 import './CalendarBar.css';
 
-const CalendarBar = ({ currentDate, handleClickLeft, handleClickRight }) => {
+const CalendarBar = ({ currentDate, handleClickLeft, handleClickRight, setArrEvents, arrEvents }) => {
   const [elementBoolean, setElementBoolean] = useState(true);
   const handleClickOpen = () => setElementBoolean(false);
   const handleClickClose = () => setElementBoolean(true);
@@ -36,7 +36,7 @@ const CalendarBar = ({ currentDate, handleClickLeft, handleClickRight }) => {
   return (
     <div className="calendar-bar">
       <div className="calendar-button" onClick={handleClickOpen}>+</div>
-      {!elementBoolean && <NewEvent handleClickClose={handleClickClose}/>}
+      {!elementBoolean && <NewEvent arrEvents={arrEvents} setArrEvents={setArrEvents} handleClickClose={handleClickClose}/>}
       <div>
         <div className="calendar-date">
           <p onClick={handleClickLeft}>&#60;</p>

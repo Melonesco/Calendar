@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import '../new-event/NewEvent.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
-import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
-import { eventCreate, eventDelete } from '../../redux/actions';
 
 const EventIconStyled = styled.div`
   background-color: #E13333;
@@ -19,13 +17,13 @@ const EventIconStyled = styled.div`
   cursor: pointer;
 `;
 
-const EditEvent = ({ cancelButtonHandler, eventItem }) => {
+const EditEvent = ({ cancelButtonHandler, eventItem, setEventItem }) => {
   // const [editEvent, setEditEvent] = useState(...events);
 
   // console.log('EditEvent >>>', editEvent);
-  console.log('EditEvent >>>', eventItem);
+  // console.log('EditEvent >>>', eventItem);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const {
     register,
     formState: {
@@ -43,9 +41,21 @@ const EditEvent = ({ cancelButtonHandler, eventItem }) => {
     cancelButtonHandler();
   };
 
-  const handleDeleteEvent = () => {
-    dispatch(eventDelete(eventItem.id));
+  const handleDeleteEvent = (text, field) => {
+    // setEventItem(prevState => ({
+    //   ...prevState,
+    //   [field]: text
+    // }));
   };
+
+  const handleChangeEvent = (text, field) => {
+    setEventItem(prevState => ({
+      ...prevState,
+      [field]: text
+    }));
+  };
+
+  console.log(eventItem);
 
   return (
     <div className="event">
@@ -65,8 +75,10 @@ const EditEvent = ({ cancelButtonHandler, eventItem }) => {
             <input
               id="title"
               type="text"
-              value={eventItem.event.titleValue}
-              maxLength={60} {...register('titleValue', { required: true })}
+              value={eventItem.titleValue}
+              onChange={e => handleChangeEvent(e.target.value, 'titleValue')}
+              maxLength={60}
+              {...register('titleValue', { required: true })}
             />
           </div>
           <div className="event-description">
@@ -75,7 +87,8 @@ const EditEvent = ({ cancelButtonHandler, eventItem }) => {
               name="description"
               id="description"
               maxLength={200}
-              value={eventItem.event.descriptionValue}
+              value={eventItem.descriptionValue}
+              onChange={e => handleChangeEvent(e.target.value, 'descriptionValue')}
               {...register('descriptionValue', { required: true })}/>
           </div>
           <div className="event-container">
@@ -87,7 +100,8 @@ const EditEvent = ({ cancelButtonHandler, eventItem }) => {
                 min="2000-01-01"
                 max="2100-01-01"
                 maxLength={10}
-                value={eventItem.event.dateValue}
+                value={eventItem.dateValue}
+                onChange={e => handleChangeEvent(e.target.value, 'dateValue')}
                 {...register('dateValue', { required: true })}
               />
             </div>
@@ -97,7 +111,8 @@ const EditEvent = ({ cancelButtonHandler, eventItem }) => {
                 id="time"
                 type="time"
                 maxLength={200}
-                value={eventItem.event.timeValue}
+                value={eventItem.timeValue}
+                onChange={e => handleChangeEvent(e.target.value, 'timeValue')}
                 {...register('timeValue', { required: true })}
               />
             </div>
@@ -105,7 +120,7 @@ const EditEvent = ({ cancelButtonHandler, eventItem }) => {
           <div className="event-submit">
             <EventIconStyled>
               <FontAwesomeIcon
-                onClick={handleDeleteEvent}
+                onClick={e => handleDeleteEvent('', 'titleValue')}
                 cursor="pointer"
                 fontSize="14px"
                 color="white"
